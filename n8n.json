@@ -1,0 +1,550 @@
+{
+  "name": "Slack Platform",
+  "nodes": [
+    {
+      "parameters": {
+        "trigger": [
+          "message"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "C0C4JLWUWU9",
+          "mode": "list",
+          "cachedResultName": "property-queries"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        208
+      ],
+      "id": "b4801fe5-673d-4724-8dee-753dfd11f9eb",
+      "name": "Slack Trigger",
+      "webhookId": "12051198-97d2-4c19-8da0-a2a0b36e9cf6",
+      "credentials": {
+        "slackApi": {
+          "id": "y5W3gUgsW83cIHvJ",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c5d395a5-64f8-47ae-a1a1-b8be5fe5502a",
+              "leftValue": "={{ /[A-Za-zÀ-ÿ]/.test(($json.text || '').trim()) && ($json.text || '').trim().length >= 3 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        192,
+        208
+      ],
+      "id": "52f3a30c-f710-4e4e-ab06-f785c0b67f2e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9d2c0db3-ff3d-45fe-bb27-2d554bcc6f43",
+              "leftValue": "={{ $json.lead.lead_status }}",
+              "rightValue": "HOT",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "8279376a-9ef4-424f-b97c-09da90c5580e",
+              "leftValue": "={{ $json.lead.lead_status }}",
+              "rightValue": "WARM",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        640,
+        208
+      ],
+      "id": "5182dd18-60b1-4cf1-a2a2-349c9b855cdd",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1uWNDSH5zPWrgH_ezBSujys9fMtcP9Q2Ftkh9v9JRAwM",
+          "mode": "list",
+          "cachedResultName": "Owner notification",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uWNDSH5zPWrgH_ezBSujys9fMtcP9Q2Ftkh9v9JRAwM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uWNDSH5zPWrgH_ezBSujys9fMtcP9Q2Ftkh9v9JRAwM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.lead.name }}",
+            "Phone": "={{ $json.lead.phone }}",
+            "Lead Status": "={{ $json.lead.lead_status }}",
+            "Intent": "={{ $json.lead.intent }}",
+            "Notes": "={{ $json.lead.notes }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead Status",
+              "displayName": "Lead Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1152,
+        256
+      ],
+      "id": "c9d9d279-e0a1-483a-83bc-a0a0290d0520",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "37L3kaZuYkThKx2Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gosling-elated-glove.ngrok-free.dev/lead-analysis",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        416,
+        208
+      ],
+      "id": "8cd6dc46-ff8b-428a-a25e-d38fa255721c",
+      "name": "Lead Analysis"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gosling-elated-glove.ngrok-free.dev/property-search",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $('Slack Trigger').item.json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        864,
+        -32
+      ],
+      "id": "9f6b2188-c78a-4a77-b9dd-c05083ffe3ac",
+      "name": "FastAPI call"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a property data extraction assistant.\n\nExtract EVERY property from the backend response and return it using the Structured Output Parser.\n\nThe backend response may contain a Markdown table.\n\nFor every property row, extract:\n\n* location\n* size\n* bedrooms\n* bathrooms\n* price_pkr\n\nRules:\n\n1. Extract every property row from the response.\n2. Ignore the \"#\" column; it is only the listing number.\n3. Copy the location exactly as provided.\n4. Copy the size exactly, including \"Marla\".\n5. Copy bedrooms as an integer.\n6. Copy bathrooms as an integer.\n7. Convert the displayed PKR price into an integer by removing \"PKR\", spaces, commas, and formatting characters.\n   Example: \"PKR 9,800,000\" → 9800000\n8. Do not invent any property.\n9. Do not remove any property.\n10. Do not modify property values.\n11. total_properties must equal the number of properties extracted.\n12. If there are 3 property rows, return exactly 3 properties.\n13. If there are no property rows, return an empty properties array and total_properties = 0.\n14. Return ONLY the structured output required by the Structured Output Parser.\n15. Do not return Markdown, explanations, or commentary.\n\nBackend response:\n\n{{ $json.response }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1088,
+        -144
+      ],
+      "id": "6287631e-3afc-4f8b-891d-54d0c1a3f3cf",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        1104,
+        96
+      ],
+      "id": "162d622a-eefd-42ae-af62-a048da7adef6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YweDCmI06J8pvs6G",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"properties\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"location\": {\n            \"type\": \"string\"\n          },\n          \"size\": {\n            \"type\": \"string\"\n          },\n          \"bedrooms\": {\n            \"type\": \"integer\"\n          },\n          \"bathrooms\": {\n            \"type\": \"integer\"\n          },\n          \"price_pkr\": {\n            \"type\": \"integer\"\n          }\n        },\n        \"required\": [\n          \"location\",\n          \"size\",\n          \"bedrooms\",\n          \"bathrooms\",\n          \"price_pkr\"\n        ]\n      }\n    },\n    \"total_properties\": {\n      \"type\": \"integer\"\n    }\n  },\n  \"required\": [\n    \"properties\",\n    \"total_properties\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1232,
+        96
+      ],
+      "id": "ccc1d20d-224c-4040-aca3-0876fc8e1f0f",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json.output;\n\nlet message = \"🏠 Here are the properties matching your requirements:\\n\\n\";\n\ndata.properties.forEach((property, index) => {\n  message += `${index + 1}. ${property.location}\\n`;\n  message += `📐 Size: ${property.size}\\n`;\n  message += `🛏️ Bedrooms: ${property.bedrooms}\\n`;\n  message += `🛁 Bathrooms: ${property.bathrooms}\\n`;\n  message += `💰 Price: PKR ${property.price_pkr.toLocaleString()}\\n`;\n  message += `\\n`;  // blank line between properties\n});\n\nmessage += `I found ${data.total_properties} matching properties.`;\n\nreturn [\n  {\n    json: {\n      message: message\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        -32
+      ],
+      "id": "177465c7-5a31-42cd-9a4a-dfb7c059a009",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C4JLWUWU9",
+          "mode": "list",
+          "cachedResultName": "property-queries"
+        },
+        "text": "={{ $json.message }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        1664,
+        -32
+      ],
+      "id": "58a108f7-77a9-4d83-ac71-485475eed837",
+      "name": "Send a message",
+      "webhookId": "2244d693-422b-4bd5-9ea2-bff9edbe5235",
+      "credentials": {
+        "slackApi": {
+          "id": "y5W3gUgsW83cIHvJ",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "645fb5d6-09b1-4c96-9481-e710fc6d6d63",
+              "leftValue": "={{ !$json.lead.missing_contact_info }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        864,
+        352
+      ],
+      "id": "f0654af8-029e-4f9d-b0bc-00509c0c8148",
+      "name": "Check contact information"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "#property-queries"
+        },
+        "text": "={{ \n$json.lead.missing_fields.length === 2\n  ? \"Thanks for your interest! 😊 Could you please share your name and phone number so our agent can contact you?\"\n  : $json.lead.missing_fields[0] === \"phone\"\n    ? \"Thanks for your interest! 😊 Could you please share your phone number so our agent can contact you?\"\n    : \"Thanks for your interest! 😊 Could you please share your name so we can record your inquiry?\"\n}}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        1152,
+        448
+      ],
+      "id": "2def80ab-5861-47f0-a85d-6ca3a2cac857",
+      "name": "Send a message1",
+      "webhookId": "74638e81-3357-4239-9ec4-f036740b044b",
+      "credentials": {
+        "slackApi": {
+          "id": "y5W3gUgsW83cIHvJ",
+          "name": "Slack account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Lead Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Check contact information",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "FastAPI call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Analysis": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FastAPI call": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check contact information": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5ccc8601-428c-490d-9efe-d31d48722800",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "04dbfff73eb51400f132ea817b025a853ff4db0be1e46693984ec30cc9c10f56"
+  },
+  "nodeGroups": [],
+  "id": "VA5B2azlJB7m4Xn1",
+  "tags": []
+}
